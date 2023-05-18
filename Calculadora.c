@@ -4,6 +4,7 @@
 
 int menu();
 int escolhas(int opcao);
+int decimalBinario();
 
 int main() {
   setlocale(LC_ALL, "Portuguese");
