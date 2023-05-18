@@ -23,6 +23,8 @@ int menu() {
     printf("#  Calculadora de decimal para binario  #\n");
     printf("#########################################\n\n");
 
+    printf("Aviso:Arquivo ainda esta em fase de teste.");
+
     printf("1 - Conversão de Decimal para Binário\n");
     printf("2 - Conversão de Binário para de Decimal\n");
     printf("3 - Conversão de Binário para Hexadecimal\n");
