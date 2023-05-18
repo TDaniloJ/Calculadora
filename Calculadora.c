@@ -29,7 +29,7 @@ int menu() {
     printf("4 - Conversão de Hexadecimal para Binário\n");
     printf("5 - Conversão de Hexadecimal para Decimal\n");
     printf("6 - Conversão de Decimal para Hexadecimal\n");
-    printf("0 - Sair\n\n");
+    printf("0 - Sair1\n\n");
 
     printf("Escolha uma das opções: ");
     scanf("%d", op);
