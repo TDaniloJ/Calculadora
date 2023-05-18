@@ -23,7 +23,7 @@ int menu() {
     printf("#  Calculadora de decimal para binario  #\n");
     printf("#########################################\n\n");
 
-    printf("Aviso:Arquivo ainda esta em fase de teste.");
+    printf("Aviso:Arquivo ainda esta em fase de teste.\n\n");
 
     printf("1 - Conversão de Decimal para Binário\n");
     printf("2 - Conversão de Binário para de Decimal\n");
@@ -31,7 +31,7 @@ int menu() {
     printf("4 - Conversão de Hexadecimal para Binário\n");
     printf("5 - Conversão de Hexadecimal para Decimal\n");
     printf("6 - Conversão de Decimal para Hexadecimal\n");
-    printf("0 - Sair1\n\n");
+    printf("0 - Sair\n\n");
 
     printf("Escolha uma das opções: ");
     scanf("%d", op);
