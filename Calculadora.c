@@ -3,17 +3,22 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <conio.h>
-#include <math.h>
 #define MAX 50
 
 int menu();
 int escolhas(int opcao);
-int decimalBinario();
+void decimalBinario();
 int binarioDecimal();
+int binarioHexadecimal();
+int hexadecimalBinario();
+int hexadecimalDecimal();
+int decimalHexaDecimal();
 
 int main() {
   setlocale(LC_ALL, "Portuguese");
   
+  system("title Calculadora de Conversão");
+
   menu();
 
 }
@@ -41,16 +46,13 @@ int menu() {
     printf("Escolha uma das opções: ");
     scanf("%d", &op);
 
-	system("cls");
+	  system("cls");
 	
     escolhas(op);
     
     system("cls");
 	
   } while (op != 0);
-  
-  
-
 }
 
 int escolhas(int opcao) {
@@ -62,16 +64,16 @@ int escolhas(int opcao) {
     binarioDecimal();
     break;
   case 3:
-    //binarioHexadecimal();
+    binarioHexadecimal();
     break;
   case 4:
-    //hexadecimalBinario();
+    hexadecimalBinario();
     break;
   case 5:
-    //hexadecimalDecimal();
+    hexadecimalDecimal();
     break;
   case 6:
-    //decimalHexadecimal();
+    decimalHexaDecimal();
     break;
  
   default:
@@ -80,66 +82,230 @@ int escolhas(int opcao) {
   }
 }
 
-int decimalBinario() {
-	int num, decimal;
-	int vet_bin[MAX];
-	int i = 0, j;
-	int aux_num = num;
-	char sair = 's';
+void decimalBinario() {
+  int decimal;
+  int binario[MAX];
+  int indice = 0;
+  char op;
 
-	do{
-	
-	    printf("##########################\n");
-	    printf("#  Decimal para Binario  #\n");
-	    printf("##########################\n\n");
-		
-		printf("Informe um numero em decimal: ");
-		scanf("%d", &num);
-		
-		
-		while(num > 0) {
-			vet_bin[i] = num % 2;
-			i++;
-			num = num / 2;
-		}
-		
-		printf("\nO Valor de Decimal: %d", aux_num);
-		
-		printf("\nO valor de Binario: ");
-	
-		for(j = i - 1; j >= 0; j--) {
-			printf("%d", vet_bin[j]);
-		}
-		printf("\n");
-		
-		printf("\nDeseja Fazer novamente? (s/n): ");
-		scanf("%c", &sair);
-		
-		
-	
-	}while(sair == 's');
-	
-	getche();
+ do {
+    
+  printf("Digite um número decimal: ");
+  scanf("%d", &decimal);
+
+  if (decimal == 0) {
+    printf("0");
+    return;
+  }
+
+  while (decimal > 0) {
+    binario[indice] = decimal % 2;
+    decimal /= 2;
+    indice++;
+  }
+
+  for (int i = indice - 1; i >= 0; i--) {
+    printf("%d", binario[i]);
+  }
+
+  system("pause");
+  system("cls");
+
+  printf("Deseja Fazer um novo Calculo? (s/n): ");
+  scanf("%c", &op);
+  //fflush(stdin);
+
+  system("pause");
+
+ }while (toupper(op) == 'S');
 }
 
 int binarioDecimal() {
-	int decimal = 0, i = 0, resto, binario;
-	
-	//printf("Informe um numero em binario: ");
-	//scanf("%d" &num);
-	
-	while(binario != 0) {
-	    resto = binario % 10;
-	    binario /= 10;
-	    decimal += resto * pow(2, i);
-	    ++i;
-	}
-	
-	printf("O Valor de %d em decimal é %d", decimal);
-	
-	printf("\nPara Volta para o menu aperte (Enter).");
-	
-	getche();
-	
-	return 0;
+    long long binario;
+    int decimal = 0, expoente = 0;
+
+    printf("Digite um número binário: ");
+    scanf("%lld", &binario);
+
+    int decimal = binarioParaDecimal(binario);
+
+    printf("O número em decimal é: %d\n", decimal);
+
+       
+
+    while (binario != 0) {
+        int digito = binario % 10;
+        decimal += digito << expoente;
+        expoente++;
+        binario /= 10;
+    }
+}
+
+int binarioHexadecimal(){
+    char binario[20];
+    int decimal = 0, expoente = 0, i;
+    int tamanho = strlen(binario);
+    char hexadecimal[20];
+
+
+    printf("Digite um número binário: ");
+    scanf("%s", binario);
+
+    char* hexadecimal = binarioParaHexadecimal(binario);
+
+    printf("O número em hexadecimal é: %s\n", hexadecimal);
+
+
+    // Converte o número binário para decimal
+    for (i = tamanho - 1; i >= 0; i--) {
+        decimal += (binario[i] - '0') << expoente;
+        expoente++;
+    }
+
+    // Converte o número decimal para hexadecimal
+    sprintf(hexadecimal, "%X", decimal);
+}
+
+int hexadecimalBinario(){
+    char hexadecimal[20];
+    int tamanho = strlen(hexadecimal);
+    char binario[20];
+    int indice = 0;
+
+
+    printf("Digite um número hexadecimal: ");
+    scanf("%s", hexadecimal);
+
+    char* binario = hexadecimalParaBinario(hexadecimal);
+
+    if (binario != NULL) {
+        printf("O número em binário é: %s\n", binario);
+    }
+
+    // Converte cada dígito hexadecimal para binário
+    for (int i = 0; i < tamanho; i++) {
+        switch (hexadecimal[i]) {
+            case '0':
+                strcat(binario, "0000");
+                break;
+            case '1':
+                strcat(binario, "0001");
+                break;
+            case '2':
+                strcat(binario, "0010");
+                break;
+            case '3':
+                strcat(binario, "0011");
+                break;
+            case '4':
+                strcat(binario, "0100");
+                break;
+            case '5':
+                strcat(binario, "0101");
+                break;
+            case '6':
+                strcat(binario, "0110");
+                break;
+            case '7':
+                strcat(binario, "0111");
+                break;
+            case '8':
+                strcat(binario, "1000");
+                break;
+            case '9':
+                strcat(binario, "1001");
+                break;
+            case 'A':
+            case 'a':
+                strcat(binario, "1010");
+                break;
+            case 'B':
+            case 'b':
+                strcat(binario, "1011");
+                break;
+            case 'C':
+            case 'c':
+                strcat(binario, "1100");
+                break;
+            case 'D':
+            case 'd':
+                strcat(binario, "1101");
+                break;
+            case 'E':
+            case 'e':
+                strcat(binario, "1110");
+                break;
+            case 'F':
+            case 'f':
+                strcat(binario, "1111");
+                break;
+            default:
+                printf("Caractere hexadecimal inválido: %c\n", hexadecimal[i]);
+                return NULL;
+        }
+    }
+}
+
+int hexadecimalDecimal(){
+    char hexadecimal[20];
+    int tamanho = strlen(hexadecimal);
+    int decimal = 0;
+    int expoente = 1;
+
+    printf("Digite um número hexadecimal: ");
+    scanf("%s", hexadecimal);
+
+    int decimal = hexadecimalParaDecimal(hexadecimal);
+
+    if (decimal != -1) {
+        printf("O número em decimal é: %d\n", decimal);
+    }
+
+
+    // Converte cada dígito hexadecimal para decimal
+    for (int i = tamanho - 1; i >= 0; i--) {
+        int valor;
+        if (hexadecimal[i] >= '0' && hexadecimal[i] <= '9') {
+            valor = hexadecimal[i] - '0';
+        } else if (hexadecimal[i] >= 'A' && hexadecimal[i] <= 'F') {
+            valor = hexadecimal[i] - 'A' + 10;
+        } else if (hexadecimal[i] >= 'a' && hexadecimal[i] <= 'f') {
+            valor = hexadecimal[i] - 'a' + 10;
+        } else {
+            printf("Caractere hexadecimal inválido: %c\n", hexadecimal[i]);
+            return -1;
+        }
+
+        decimal += valor * expoente;
+        expoente *= 16;
+    }
+}
+
+int decimalHexaDecimal(){
+    int decimal;
+    char hexadecimal[20];
+    int indice = 0;
+
+    printf("Digite um número decimal: ");
+    scanf("%d", &decimal);
+
+    while (decimal != 0) {
+        int resto = decimal % 16;
+
+        if (resto < 10)
+            hexadecimal[indice] = resto + '0';
+        else
+            hexadecimal[indice] = resto - 10 + 'A';
+
+        decimal /= 16;
+        indice++;
+    }
+
+    printf("O número em hexadecimal é: ");
+
+    for (int i = indice - 1; i >= 0; i--) {
+        printf("%c", hexadecimal[i]);
+    }
+
+    printf("\n");
 }
